@@ -1,7 +1,7 @@
 'use strict'
 
 const firebase = require('firebase-admin')
-const serviceAccount = require('../config/platzioverflow-53356-firebase-adminsdk-r0cuf-477bf433d8.json');
+const serviceAccount = require('../config/firebase.json');
 const User = require('./users');
 
 firebase.initializeApp({
