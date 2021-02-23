@@ -23,6 +23,27 @@ class User {
 
         return newUser.key;
     }
+
+    async validateUser({ email, password }) {
+        const userQuery = await this.collection
+            .orderByChild('email')
+            .equalTo(email)
+            .once('value')
+        const userFound = userQuery.val();
+
+        if (userFound === undefined) {
+            throw new Error(`Error validating user`)
+        }
+
+        const userId = Object.keys(userFound)[0]
+        const isPasswordRight = await bcrypt.compare(password, userFound[userId].password);
+        
+        if (!isPasswordRight) {
+            return false;
+        }
+
+        return userFound[userId];
+    }
 }
 
 module.exports = User;
