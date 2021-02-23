@@ -1,7 +1,7 @@
 'use strict'
 
 const inert = require('inert');
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const path = require('path');
 const handleabars = require('handlebars');
 const routes = require('./routes');
