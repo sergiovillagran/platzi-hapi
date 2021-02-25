@@ -9,9 +9,16 @@ async function createUser(req, h) {
         result = await users.create(req.payload); 
     } catch (error) {
         console.log(error);
-        return h.response('Problemas creando el usuario').code(500);
+        return h.view('register', {
+            title: 'Register',
+            error: 'Error creando un usuario'
+        });
     }
-    return h.response(`usuario creado con id ${result}`);
+
+    return h.view('register', {
+        title: 'Register',
+        success: 'Usuario creado exitosamente'
+    });
 }
 
 async function validateUser (req, h) {
@@ -20,11 +27,17 @@ async function validateUser (req, h) {
     try {
         result = await users.validateUser(req.payload);
         if (!result) {
-            h.response('Error on email or password').code(401);
+            return h.view('login', {
+                title: 'Register',
+                error: 'Error on email or password'
+            });
         }
     } catch (error) {
         console.log(error);
-        return h.response('Problemas validando el usuario').code(500)
+        return h.view('login', {
+            title: 'Register',
+            error: 'Problemas validando el usuario'
+        });
     }
     return h.redirect('/').state('user', {
         name: result.name,
@@ -33,7 +46,14 @@ async function validateUser (req, h) {
 }
 
 async function failValidation (req, h, error) {
-    return Boom.badRequest('Fallo la validacion', req.payload);
+    const templates = {
+        '/create-user': 'register',
+        '/validate-user': 'login',
+    }
+    return h.view(templates[req.path], { 
+        title: 'Error de validacion',
+        error: 'Por favor complete los campos requeridos'
+    }).code(400)
 }
 
 module.exports = { 
