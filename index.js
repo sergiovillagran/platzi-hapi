@@ -8,6 +8,11 @@ const routes = require('./routes');
 const vision = require('vision');
 const site = require('./controllers/site')
 
+handleabars.registerHelper('answerNumber', (answers) => {
+    const keys = Object.keys(answers);
+    return keys.length;
+})
+
 const server = Hapi.Server({
     port: process.env.PORT || 3000,
     host: process.env.HOST || 'localhost',
