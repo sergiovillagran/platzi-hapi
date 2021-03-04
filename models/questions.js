@@ -9,9 +9,21 @@ class Question {
         this.collection = this.ref.child('questions');
     }
 
-    async create(data, user) {
-        const question = this.collection.push();
-        question.set({ ...data, owner: user });
+    async create(info, owner, fileName) {
+        const data = {
+            description: info.description,
+            title: info.title,
+            owner,
+        }
+        
+        if (fileName) {
+            data.filename = fileName;
+        }
+
+        console.log(data)
+
+        const question = await this.collection.push();
+        question.set(data);
 
         return question.key;
     }

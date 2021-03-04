@@ -9,6 +9,12 @@ module.exports = [
     {
         method: 'GET',
         path: '/',
+        options: {
+            cache: {
+                expiresIn: 30 * 1000, 
+                privacy: 'private'
+            }, 
+        },
         handler: site.home,
     },
     {
@@ -79,10 +85,15 @@ module.exports = [
         method: 'POST',
         path: '/create-question',
         options: {
+            payload: {
+                parse: true,
+                multipart: true,
+            },
             validate: {
                 payload: Joi.object({
                     title: Joi.string().required(),
                     description: Joi.string().required(),
+                    image: Joi.any().optional(),
                 }),
                 failAction: user.failValidation,
             }

@@ -17,13 +17,7 @@ function register (req, h) {
 
 
 async function home(req, h) {
-    let questions; 
-    try {
-        questions = await question.getLast(10)
-    } catch (error) {
-        console.error(error);
-    }
-    console.log(questions)
+    const questions = await req.server.methods.getLast(10); 
     return h.view('index',
         {
             title: 'Home',
